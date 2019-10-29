@@ -180,7 +180,6 @@ void api::fill_hostgroups(RestClient::Connection& conn, uint32_t page) {
   }
 }
 
-#include <iostream>
 void api::fill_servicegroups(RestClient::Connection& conn, uint32_t page) {
   std::stringstream ss;
   uint32_t limit{100};
@@ -188,7 +187,6 @@ void api::fill_servicegroups(RestClient::Connection& conn, uint32_t page) {
      << "page=" << page;
   RestClient::Response r = conn.get(ss.str());
 
-  std::cout << r.body << std::endl;
   std::string err;
   json11::Json js{json11::Json::parse(r.body, err)};
   if (!err.empty())
