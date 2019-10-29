@@ -34,15 +34,16 @@ include_directories(${source_dir})
 link_directories(${binary_dir})
 
 add_library(crestapi SHARED centreon-api.cc)
+target_link_libraries(crestapi -lrestclient-cpp -ljson11)
 add_dependencies(crestapi restclient-cpp json11_lib)
 
 if(${EXAMPLES})
   add_executable(ctest main.cc)
   add_dependencies(ctest crestapi)
   link_directories(${CMAKE_BINARY_DIR})
-  target_link_libraries(ctest crestapi -lrestclient-cpp -ljson11)
+  target_link_libraries(ctest crestapi)
 
   add_executable(cgraph graph.cc)
-  target_link_libraries(cgraph crestapi -lrestclient-cpp -ljson11)
+  target_link_libraries(cgraph crestapi)
   add_dependencies(cgraph crestapi)
 endif()
