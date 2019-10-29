@@ -30,15 +30,19 @@ ExternalProject_Add(json11_lib
 
 ExternalProject_Get_Property(json11_lib source_dir)
 ExternalProject_Get_Property(json11_lib binary_dir)
-
-link_directories(${binary_dir})
 include_directories(${source_dir})
+link_directories(${binary_dir})
 
 add_library(crestapi SHARED centreon-api.cc)
-add_executable(ctest main.cc)
-add_dependencies(ctest restclient-cpp json11_lib crestapi)
-link_directories(${CMAKE_BINARY_DIR})
-target_link_libraries(ctest crestapi -lrestclient-cpp -ljson11)
+add_dependencies(crestapi restclient-cpp json11_lib)
 
-add_executable(cgraph graph.cc)
-target_link_libraries(cgraph crestapi -lrestclient-cpp -ljson11)
+if(${EXAMPLES})
+  add_executable(ctest main.cc)
+  add_dependencies(ctest crestapi)
+  link_directories(${CMAKE_BINARY_DIR})
+  target_link_libraries(ctest crestapi -lrestclient-cpp -ljson11)
+
+  add_executable(cgraph graph.cc)
+  target_link_libraries(cgraph crestapi -lrestclient-cpp -ljson11)
+  add_dependencies(cgraph crestapi)
+endif()
