@@ -4,6 +4,8 @@
 
 #include <json11.hpp>
 #include <sstream>
+#include <restclient-cpp/connection.h>
+#include <restclient-cpp/restclient.h>
 #include "centreon-api.h"
 
 using namespace crestapi;

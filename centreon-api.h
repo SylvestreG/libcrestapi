@@ -7,8 +7,10 @@
 
 #include <stdint.h>
 #include <unordered_map>
-#include <restclient-cpp/connection.h>
-#include <restclient-cpp/restclient.h>
+
+namespace RestClient {
+  class Connection;
+};
 
 namespace crestapi {
 // A hash function used to hash a pair of any kind
