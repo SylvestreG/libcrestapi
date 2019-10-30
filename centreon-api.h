@@ -26,19 +26,13 @@ struct hash_pair {
 typedef std::string hostname;
 typedef std::pair<std::string, std::string> servicename;
 
-typedef uint64_t hostid;
-typedef std::pair<uint64_t, uint64_t> serviceid;
-
 typedef std::string hostgroupname;
 typedef std::string servicegroupname;
 
-typedef std::unordered_map<hostname, hostid> hosts;
-typedef std::unordered_map<servicename, serviceid, hash_pair> services;
+typedef std::unordered_map<hostname, std::string> hosts;
+typedef std::unordered_map<servicename, std::string, hash_pair> services;
 typedef std::unordered_map<hostgroupname, hosts> hostgroups;
 typedef std::unordered_map<servicegroupname, services> servicegroups;
-
-typedef std::unordered_map<hostid, hostname> hosts_by_ids;
-typedef std::unordered_map<serviceid, servicename, hash_pair> services_by_ids;
 
 
 
@@ -57,9 +51,6 @@ class api {
   services _services;
   hostgroups _hostgroups;
   servicegroups _servicegroups;
-  hosts_by_ids _hosts_by_ids;
-  services_by_ids _services_by_ids;
-
 
  public:
   static api& instance();
@@ -73,8 +64,6 @@ class api {
   services const& get_services(void) const;
   hostgroups const& get_hostgroups(void) const;
   servicegroups const& get_servicegroups(void) const;
-  hosts_by_ids const& get_hosts_by_ids(void) const;
-  services_by_ids const& get_services_by_ids(void) const;
 };
 };
 

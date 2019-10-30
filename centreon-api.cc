@@ -28,12 +28,6 @@ servicegroups const &api::get_servicegroups(void) const {
   return _servicegroups;
 }
 
-hosts_by_ids const &api::get_hosts_by_ids(void) const { return _hosts_by_ids; }
-
-services_by_ids const &api::get_services_by_ids(void) const {
-  return _services_by_ids;
-}
-
 bool api::fetch(std::string const &url, std::string const &login,
                 std::string const &pass) {
 
@@ -91,7 +85,7 @@ void api::fill_hosts(RestClient::Connection &conn, uint32_t page) {
     return;
 
   for (auto it : js["result"].array_items()) {
-    _hosts[it["name"].string_value()] = it["id"].int_value();
+    _hosts[it["name"].string_value()] = it.dump();
   }
 
   uint32_t total = js["meta"]["total"].int_value();
@@ -119,8 +113,8 @@ void api::fill_services(RestClient::Connection &conn, uint32_t page) {
 
   for (auto it : js["result"].array_items()) {
     _services[{it["host"]["name"].string_value(),
-               it["display_name"].string_value()}] = {
-        it["host"]["id"].int_value(), it["id"].int_value()};
+               it["display_name"].string_value()}] =
+        it.dump();
   }
 
   uint32_t total = js["meta"]["total"].int_value();
@@ -149,7 +143,7 @@ void api::fill_hostgroups(RestClient::Connection &conn, uint32_t page) {
   for (auto it : js["result"].array_items()) {
     for (auto h : it["hosts"].array_items())
       _hostgroups[it["name"].string_value()][h["name"].string_value()] =
-          h["id"].int_value();
+          h.dump();
   }
 
   uint32_t total = js["meta"]["total"].int_value();
@@ -179,9 +173,8 @@ void api::fill_servicegroups(RestClient::Connection &conn, uint32_t page) {
     for (int i = 0; i < it["hosts"].array_items().size(); i++) {
       _servicegroups[it["name"].string_value()]
                     [{it["hosts"][i]["name"].string_value(),
-                      it["services"][i]["name"].string_value()}] = {
-                        it["hosts"][i]["id"].int_value(),
-                        it["services"][i]["id"].int_value()};
+                      it["services"][i]["name"].string_value()}] =
+                        it.dump();
     }
   }
 
